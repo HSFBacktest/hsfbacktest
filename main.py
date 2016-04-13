@@ -1,17 +1,28 @@
+import numpy as np
 import pandas as pd
 import datetime
 import pandas.io.data as web
 import matplotlib.pyplot as plt
 from matplotlib import style
 style.use('ggplot')
+paramList = ['PE','PB']
 
-start = datetime.datetime(2012,1,1)
-end = datetime.datetime(2015,1,1)
+df = pd.read_csv('/Users/SteveKeyHarvey/OneDrive/Development/HSFBacktest/book.csv',
+    index_col=0)
 
-df = web.DataReader("SHPG", "yahoo", start, end)
+df['PE Score'] = df['PE'] > 10
 
+def ftgScore(Ratio, Score):
+    df[('%s Score' % Ratio)] = df[('%s' % Ratio)] < Score
+    print(df[('%s Score' % Ratio)])
 
-print(df.tail(1))
-df['Adj Close'].plot()
+for param in paramList:
+    ftgScore(param, 8)
 
-#plt.show()
+#print (df.head())
+#start = datetime.datetime(2012,1,1)
+#end = datetime.datetime(2015,1,1)
+#df = web.DataReader("SHPG", "yahoo", start, end)
+#print(df[['Adj Close','Close']])
+#df['Adj Close'].plot()
+##plt.show()
