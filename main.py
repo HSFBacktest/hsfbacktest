@@ -1,8 +1,17 @@
-import numpy as np
 import pandas as pd
+import datetime
+import pandas.io.data as web
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
 
-x = 5
-for i in range(1,10):
-    x = x +1
-    print x+2
-    print "Steve is lame"
+start = datetime.datetime(2012,1,1)
+end = datetime.datetime(2015,1,1)
+
+df = web.DataReader("SHPG", "yahoo", start, end)
+
+
+print(df.tail(1))
+df['Adj Close'].plot()
+
+#plt.show()
