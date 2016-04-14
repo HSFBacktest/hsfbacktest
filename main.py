@@ -20,35 +20,53 @@ df = pd.read_csv('/Users/SteveKeyHarvey/OneDrive/Development/HSFBacktest/book.cs
     index_col=0)
     
 #Iteration Function 
-'''   
+'''
 numIterations=0
 for element in product(peRange,pbRange):
     numIterations=numIterations+1
     print element
 print numIterations
 '''
-
 #Scoring Process (Long Way)
-df['PE Score'] = df['PE'] < 17
-df['PB Score'] = df['PB'] < 4
-df['EPS Score'] = df['EPS'] > 0
-df['DE Score'] = df['DE'] < 70
-df['FCF Score'] = df['FCF'] > 20
-df['ROE Score'] = df['ROE'] > 13
-df['ROA Score'] = df['ROA'] > 14
-df['BETA Score'] = 1.0/(df['BETA']*10000)
-df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) + 
-    df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
-    df['ROA Score'] + df['BETA Score'])
+def score():
+    df['PE Score'] = df['PE'] < 17
+    df['PB Score'] = df['PB'] < 4
+    df['EPS Score'] = df['EPS'] > 0
+    df['DE Score'] = df['DE'] < 70
+    df['FCF Score'] = df['FCF'] > 20
+    df['ROE Score'] = df['ROE'] > 13
+    df['ROA Score'] = df['ROA'] > 14
+    df['BETA Score'] = 1.0/(df['BETA']*10000)
+    df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) + 
+        df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
+        df['ROA Score'] + df['BETA Score'])
+    #Sort Scored Data
+    df.sort_values(by=['FTG Score'], ascending=[False], inplace=True)
+    
+    #Trim Data to Top 10 Companies
+    df1 = df[:10]
+    
+    #Get Average Returns of Top 10 Companies
+    df2 = df1.mean(axis=1)
+    #df2['avgReturn'] = df2.mean()
+    print df2.head()
+    
+#Iteration Function
+numIterations=0
+for element in product(peRange,pbRange):
+    score()
+    numIterations=numIterations+1
+print numIterations
 
-#Sort Scored Data
-df2 = df.sort_values(by=['FTG Score'], ascending=[False])
-#Trim Data to Top 10 Companies
-df3 = df2[:10]
-print (df3)
+
+#Run Functions
+#score()
 
 
 
+
+
+'''
 #def iterate(*args):
 #    for element in 
 #        x = product(*args)
@@ -78,3 +96,4 @@ print (df3)
 #print(df[['Adj Close','Close']])
 #df['Adj Close'].plot()
 #plt.show()
+'''
