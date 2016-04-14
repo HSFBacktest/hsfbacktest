@@ -10,60 +10,72 @@ style.use('ggplot')
 paramList = ['PE','PB']
 peRange = range(0,20)
 pbRange = range(0,5)
-epsRange = range(0,100,10)
-deRange = range(0,100,10)
-fcfRange = range(0,100,10)
-roeRange = range(0,20)
-roaRange = range(0,20)
+epsRange = range(0,50,10)
+deRange = range(0,50,10)
+fcfRange = range(0,50,10)
+roeRange = range(0,10)
+roaRange = range(0,10)
 
-df = pd.read_csv('/Users/SteveKeyHarvey/OneDrive/Development/HSFBacktest/book.csv',
-    index_col=0)
+df = pd.read_csv('book.csv',index_col=0)
+
+#Scoring Function (Long Way)
+def ftgscore(df, ranges):
+    #Test Ranges
+    #peTest = ranges[0]
+    #pbTest = ranges[1]
+    #testRanges = [peTest, pbTest]
     
-#Iteration Function 
-'''
-numIterations=0
-for element in product(peRange,pbRange):
-    numIterations=numIterations+1
-    print element
-print numIterations
-'''
-#Scoring Process (Long Way)
-def score():
-    df['PE Score'] = df['PE'] < 17
-    df['PB Score'] = df['PB'] < 4
-    df['EPS Score'] = df['EPS'] > 0
-    df['DE Score'] = df['DE'] < 70
-    df['FCF Score'] = df['FCF'] > 20
-    df['ROE Score'] = df['ROE'] > 13
-    df['ROA Score'] = df['ROA'] > 14
+    testDict = {'peTest':ranges[0], 'pbTest':ranges[1],'epsTest':ranges[2],
+        'deTest':ranges[3],'fcfTest':ranges[4],'roeTest':ranges[5],
+        'roaTest':ranges[6]}
+
+    df['PE Score'] = df['PE'] < ranges[0]
+    df['PB Score'] = df['PB'] < ranges[1]
+    df['EPS Score'] = df['EPS'] > ranges[2]
+    df['DE Score'] = df['DE'] < ranges[3]
+    df['FCF Score'] = df['FCF'] > ranges[4]
+    df['ROE Score'] = df['ROE'] > ranges[5]
+    df['ROA Score'] = df['ROA'] > ranges[6]
     df['BETA Score'] = 1.0/(df['BETA']*10000)
     df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) + 
         df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
         df['ROA Score'] + df['BETA Score'])
+    
     #Sort Scored Data
     df.sort_values(by=['FTG Score'], ascending=[False], inplace=True)
-    
+
     #Trim Data to Top 10 Companies
-    df1 = df[:10]
+    df = df[:10]
+    
+    #Add Parameter Columns
+    for key, value in testDict.items():
+        print (key)
+        print (value)
+        df.insert(0,('%s Test' % key),(value))
+        
+        
+        #df[('%s Test' % key)] = df[('%d' % value)]
     
     #Get Average Returns of Top 10 Companies
-    df2 = df1.mean(axis=1)
-    #df2['avgReturn'] = df2.mean()
-    print df2.head()
+    avgReturn = df['RETURN'].mean()
+    df.insert(0,'Avg Return',avgReturn)
     
-#Iteration Function
+    #Output
+    outputCSV(df)
+    
+#Output Function
+def outputCSV(df):
+    if numIterations==0:
+        df.to_csv('pandasOut.csv',mode='a')
+    else:
+        df.to_csv('pandasOut.csv',mode='a', header=False)
+
+#Iteration Loop
 numIterations=0
-for element in product(peRange,pbRange):
-    score()
+for ranges in product(peRange,pbRange,epsRange,deRange,fcfRange,roeRange,roaRange):
+    ftgscore(df, ranges)
     numIterations=numIterations+1
 print numIterations
-
-
-#Run Functions
-#score()
-
-
-
 
 
 '''
