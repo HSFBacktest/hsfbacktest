@@ -8,13 +8,13 @@ from itertools import product
 
 style.use('ggplot')
 paramList = ['PE','PB']
-peRange = range(0,20)
-pbRange = range(0,5)
-epsRange = range(0,50,10)
-deRange = range(0,50,10)
-fcfRange = range(0,50,10)
-roeRange = range(0,10)
-roaRange = range(0,10)
+peRange = range(3,8)
+pbRange = range(0,3)
+epsRange = range(10,50,10)
+deRange = range(10,50,10)
+fcfRange = range(10,50,10)
+roeRange = range(3,5)
+roaRange = range(3,5)
 
 df = pd.read_csv('book.csv',index_col=0)
 
@@ -37,8 +37,8 @@ def ftgscore(df, ranges):
     df['ROE Score'] = df['ROE'] > ranges[5]
     df['ROA Score'] = df['ROA'] > ranges[6]
     df['BETA Score'] = 1.0/(df['BETA']*10000)
-    df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) + 
-        df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
+    df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) \
+    + df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
         df['ROA Score'] + df['BETA Score'])
     
     #Sort Scored Data
@@ -49,16 +49,18 @@ def ftgscore(df, ranges):
     
     #Add Parameter Columns
     for key, value in testDict.items():
-        print (key)
-        print (value)
         df.insert(0,('%s Test' % key),(value))
-        
-        
-        #df[('%s Test' % key)] = df[('%d' % value)]
     
     #Get Average Returns of Top 10 Companies
     avgReturn = df['RETURN'].mean()
     df.insert(0,'Avg Return',avgReturn)
+    
+    #Calculate Sharpe Ratio
+    sharpe = (df['RETURN'] / df['RETURN'].std()) * np.sqrt(365.25)
+    df.insert(0,'Sharpe',sharpe)
+    print sharpe
+    
+    df = df[:1]
     
     #Output
     outputCSV(df)
@@ -72,11 +74,12 @@ def outputCSV(df):
 
 #Iteration Loop
 numIterations=0
-for ranges in product(peRange,pbRange,epsRange,deRange,fcfRange,roeRange,roaRange):
+for ranges in product(peRange,pbRange,epsRange,deRange,fcfRange,roeRange,\
+        roaRange):
     ftgscore(df, ranges)
+    print ranges
     numIterations=numIterations+1
 print numIterations
-
 
 '''
 #def iterate(*args):
