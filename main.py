@@ -3,10 +3,10 @@ import pandas as pd
 import datetime
 import pandas.io.data as web
 import matplotlib.pyplot as plt
-from matplotlib import style
+#from matplotlib import style
 from itertools import product
 
-style.use('ggplot')
+#style.use('ggplot')
 paramList = ['PE','PB']
 peRange = range(3,8)
 pbRange = range(0,3)
