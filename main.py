@@ -3,10 +3,10 @@ import pandas as pd
 import datetime
 import pandas.io.data as web
 import matplotlib.pyplot as plt
-from matplotlib import style
+#from matplotlib import style
 from itertools import product
 
-style.use('ggplot')
+#style.use('ggplot')
 paramList = ['PE','PB']
 peRange = range(0,20)
 pbRange = range(0,5)
@@ -16,7 +16,7 @@ fcfRange = range(0,100,10)
 roeRange = range(0,20)
 roaRange = range(0,20)
 
-df = pd.read_csv('/Users/SteveKeyHarvey/OneDrive/Development/HSFBacktest/book.csv',
+df = pd.read_csv('book.csv',
     index_col=0)
     
 #Iteration Function 
