@@ -3,7 +3,6 @@ import pandas as pd
 import datetime
 import pandas.io.data as web
 import matplotlib.pyplot as plt
-#from matplotlib import style
 from itertools import product
 
 #style.use('ggplot')
