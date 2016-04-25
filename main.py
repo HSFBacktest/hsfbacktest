@@ -15,7 +15,6 @@ fcfRange = range(10,50,10)
 roeRange = range(3,5)
 roaRange = range(3,5)
 
-<<<<<<< HEAD
 df = pd.read_csv('book.csv',
     index_col=0)
     
@@ -27,11 +26,10 @@ for element in product(peRange,pbRange):
     print element
 print numIterations
 '''
-=======
+
 dfEmpty = pd.DataFrame({'A' : []})
 df = pd.read_csv('book.csv',index_col=0)
 dfEmpty.to_csv('pandasOut.csv',mode='w')
->>>>>>> origin/master
 
 #Scoring Function (Long Way)
 def ftgscore(df, ranges):
