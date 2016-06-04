@@ -15,6 +15,7 @@ fcfRange = range(10,50,10)
 roeRange = range(3,5)
 roaRange = range(3,5)
 
+
 df = pd.read_csv('book.csv',
     index_col=0)
     
