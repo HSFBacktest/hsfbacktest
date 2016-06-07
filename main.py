@@ -72,7 +72,7 @@ def ftgscore(df, ranges):
     #Calculate Sharpe Ratio
     sharpe = (df['RETURN'] / df['RETURN'].std()) * np.sqrt(365.25)
     df.insert(0,'Sharpe',sharpe)
-    print sharpe
+    print (sharpe)
     
     df = df[:1]
     
@@ -91,9 +91,9 @@ numIterations=0
 for ranges in product(peRange,pbRange,epsRange,deRange,fcfRange,roeRange,\
         roaRange):
     ftgscore(df, ranges)
-    print ranges
+    print (ranges)
     numIterations=numIterations+1
-print numIterations
+print (numIterations)
 
 '''
 #def iterate(*args):
