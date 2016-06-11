@@ -16,11 +16,11 @@ roeRange = range(3,5)
 roaRange = range(3,5)
 
 
-df = pd.read_csv('book.csv',
+df = pd.read_csv('boosk.csv',
     index_col=0)
-    
-#Iteration Function 
-'''   
+
+#Iteration Function
+'''
 numIterations=0
 for element in product(peRange,pbRange):
     numIterations=numIterations+1
@@ -38,7 +38,7 @@ def ftgscore(df, ranges):
     #peTest = ranges[0]
     #pbTest = ranges[1]
     #testRanges = [peTest, pbTest]
-    
+
     testDict = {'peTest':ranges[0], 'pbTest':ranges[1],'epsTest':ranges[2],
         'deTest':ranges[3],'fcfTest':ranges[4],'roeTest':ranges[5],
         'roaTest':ranges[6]}
@@ -54,31 +54,31 @@ def ftgscore(df, ranges):
     df['FTG Score'] = (df['PE Score'].astype(int) + df['PB Score'].astype(int) \
     + df['EPS Score'] + df['DE Score'] + df['FCF Score'] + df['ROE Score'] +
         df['ROA Score'] + df['BETA Score'])
-    
+
     #Sort Scored Data
     df.sort_values(by=['FTG Score'], ascending=[False], inplace=True)
 
     #Trim Data to Top 10 Companies
     df = df[:10]
-    
+
     #Add Parameter Columns
     for key, value in testDict.items():
         df.insert(0,('%s Test' % key),(value))
-    
+
     #Get Average Returns of Top 10 Companies
     avgReturn = df['RETURN'].mean()
     df.insert(0,'Avg Return',avgReturn)
-    
+
     #Calculate Sharpe Ratio
     sharpe = (df['RETURN'] / df['RETURN'].std()) * np.sqrt(365.25)
     df.insert(0,'Sharpe',sharpe)
     print (sharpe)
-    
+
     df = df[:1]
-    
+
     #Output
     outputCSV(df)
-    
+
 #Output Function
 def outputCSV(df):
     if numIterations==0:
@@ -97,7 +97,7 @@ print (numIterations)
 
 '''
 #def iterate(*args):
-#    for element in 
+#    for element in
 #        x = product(*args)
 #        print(list(x))
 #        print(len(list((x))))
@@ -117,7 +117,7 @@ print (numIterations)
 
 #for x in np.nditer(peRange):
 #    print x
-  
+
 #print (df.head())
 #start = datetime.datetime(2012,1,1)
 #end = datetime.datetime(2015,1,1)
